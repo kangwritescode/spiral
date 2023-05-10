@@ -124,11 +124,10 @@ function DetailPage({ drink }: DetailsPageProps) {
                         </LegendItem>
                     ))}
                 </Legend>
-                <Box sx={{height: 120}}>
-                    <PieChart
-                        data={pieChartData}
-                    />
-                </Box>
+                <PieChart
+                    style={{ height: 120, width: 120 }}
+                    data={pieChartData}
+                />
             </ChartContainer>
             <Typography fontSize={17} marginTop='30px' marginX='20px'>
                 {drink?.strInstructions}
