@@ -2,8 +2,10 @@ import { Avatar, Button, Divider } from '@mui/material';
 import React from 'react'
 import { styled } from 'styled-components';
 import { type Drink } from '~/shared/types';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const StyledButton = styled(Button)`
+    position: relative;
     text-transform: unset;
     display: flex;
     justify-content: left;
@@ -15,7 +17,16 @@ const StyledButton = styled(Button)`
 `
 
 const StyledAvatar = styled(Avatar)`
-    margin-right: 7px;
+    margin-right: 15px;
+`
+
+const IosRightArrow = styled(ArrowForwardIosIcon)`
+    position: absolute; 
+    color: lightgray;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
 `
 
 interface DrinkOptionProps {
@@ -28,10 +39,10 @@ export const DrinkOption = ({ drink, onClick }: DrinkOptionProps) => {
         <>
             <StyledButton
                 fullWidth
-                onClick={() => onClick(drink.strDrink)}
-                startIcon={<StyledAvatar src={drink.strDrinkThumb}
-                />}>
+                onClick={() => onClick(drink.strDrink)}>
+                <StyledAvatar src={drink.strDrinkThumb} />
                 {drink.strDrink}
+                <IosRightArrow />
             </StyledButton>
             <Divider />
         </>
