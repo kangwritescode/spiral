@@ -9,10 +9,10 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import { api } from "~/utils/api";
 
+// Styled Components
 const SearchContainer = styled(Box)`
     border-bottom: 1px solid lightgray;
 `
-
 const SearchInput = styled(TextField)`
     width: 100%;
     & div {

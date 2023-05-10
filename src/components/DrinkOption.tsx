@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import { type Drink } from '~/shared/types';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+// Styled Component
 const StyledButton = styled(Button)`
     position: relative;
     text-transform: unset;
@@ -15,11 +16,9 @@ const StyledButton = styled(Button)`
     height: 60px;
     font-size: 17px;
 `
-
 const StyledAvatar = styled(Avatar)`
     margin-right: 15px;
 `
-
 const IosRightArrow = styled(ArrowForwardIosIcon)`
     position: absolute; 
     color: lightgray;
