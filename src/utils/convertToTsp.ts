@@ -9,7 +9,7 @@ export const unitToTsp = {
     tsp: 1,
     tbsp: 3,
     tblsp: 3,
-    cl: 2, 
+    cl: 0.2, 
     part: 16, 
     parts: 16,
     shot: 6,

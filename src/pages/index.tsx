@@ -1,4 +1,4 @@
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -10,7 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { api } from "~/utils/api";
 
 // Styled Components
-const StyledTextField = styled(TextField)`
+
+const SearchInput = styled(TextField)`
     & div {
         border-radius: 10px;
         background: whitesmoke;
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
             <Box
                 borderBottom='1px solid lightgray'
                 padding={2}>
-                <StyledTextField
+                <SearchInput
                     fullWidth
                     onChange={onChangeText}
                     size="small"
@@ -57,7 +58,7 @@ const Home: NextPage = () => {
                         key={drink.idDrink}
                         drink={drink}
                         onClick={onClickHandler} />
-                )) : <CircularProgress color='inherit' />}
+                )) : undefined}
         </>
     );
 };
