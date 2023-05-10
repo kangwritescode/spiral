@@ -1,3 +1,7 @@
+export interface DrinkResponse {
+    drinks: Drink[];
+}
+
 export type Drink = {
     idDrink: string;
     strDrink: string;
@@ -43,5 +47,6 @@ export type Drink = {
     strMeasure13: string | null;
     strMeasure14: string | null;
     strMeasure15: string | null;
-  };
-  
+};
+
+export type MeasurementUnit = 'oz' | 'cup' | 'cups' | 'tsp' | 'tbsp' | 'cl' | 'part' | 'parts' | 'shot' | 'shots' | 'tblsp';

@@ -1,47 +1,65 @@
-import { Avatar, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { styled } from "styled-components";
-import { type Drink } from "~/shared/types";
+import DrinkOption from "~/components/DrinkOption";
+import SearchIcon from '@mui/icons-material/Search';
 
 import { api } from "~/utils/api";
 
-const StyledButton = styled(Button)`
-    text-transform: unset;
-    display: flex;
-    justify-content: left;
-    border-radius: 0;
+const SearchContainer = styled(Box)`
+    border-bottom: 1px solid lightgray;
 `
 
-const DrinkOption = ({ drink }: { drink: Drink }) => {
-    return (
-        <StyledButton fullWidth startIcon={<Avatar src={drink.strDrinkThumb} />}>
-            <Typography>{drink.strDrink}</Typography>
-        </StyledButton>
-    );
-};
-
-const SearchInput = styled(TextField)``
+const SearchInput = styled(TextField)`
+    width: 100%;
+    & div {
+        border-radius: 10px;
+        background: whitesmoke;
+    }
+`
 
 const Home: NextPage = () => {
+    // State
     const [searchText, setSearchText] = useState("");
+    // Query
+    const { data, status } = api.cocktail.getDrinks.useQuery({ drink: searchText });
+    // Router
+    const router = useRouter();
 
-    const drinks = api.cocktail.getDrinks.useQuery({ drink: searchText });
-
+    // Handlers
     const onChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(event.target.value);
     };
+
+    const onClickHandler = (name: string) => {
+        void router.push(`/detail/${name}`);
+    }
 
     return (
         <>
             <Head>
                 <title>Search Bar</title>
             </Head>
-            <SearchInput onChange={onChangeText} fullWidth/>
-            {drinks.data?.map((drink) => (
-                <DrinkOption key={drink.idDrink} drink={drink} />
-            ))}
+            <SearchContainer
+                padding={2}>
+                <SearchInput
+                    onChange={onChangeText}
+                    size="small"
+                    placeholder="Find a drink"
+                    InputProps={{
+                        startAdornment: <SearchIcon sx={{ marginRight: 1, color: 'gray' }} />
+                    }} />
+            </SearchContainer>
+            {status === 'success' && data ?
+                data.map((drink) => (
+                    <DrinkOption
+                        key={drink.idDrink}
+                        drink={drink}
+                        onClick={onClickHandler} />
+                )) : undefined}
         </>
     );
 };
