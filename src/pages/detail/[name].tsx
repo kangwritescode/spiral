@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Avatar, Stack, Typography } from '@mui/material';
 import { type GetServerSideProps } from 'next';
 import React, { useEffect, useState } from 'react'
 import { PieChart } from 'react-minimal-pie-chart';
@@ -68,7 +68,7 @@ function DetailPage({ drink }: DetailsPageProps) {
     }, []);
 
     useEffect(() => {
-        // Generate ingredients from drink prop
+        // Generate ingredients from drink data
         const ingredients: Ingredient[] = [];
         for (let i = 1; i <= 15; i++) {
             if (drink) {

@@ -10,7 +10,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { api } from "~/utils/api";
 
 // Styled Components
-
 const SearchInput = styled(TextField)`
     & div {
         border-radius: 10px;
