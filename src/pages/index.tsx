@@ -17,6 +17,10 @@ const SearchInput = styled(TextField)`
         background: whitesmoke;
     }
 `
+const SearchContainer = styled(Box)`
+    border-bottom: 1px solid lightgray;
+    padding: 16px;
+`
 
 const Home: NextPage = () => {
     // State
@@ -42,9 +46,7 @@ const Home: NextPage = () => {
             <Head>
                 <title>Search Bar</title>
             </Head>
-            <Box
-                borderBottom='1px solid lightgray'
-                padding={2}>
+            <SearchContainer>
                 <SearchInput
                     fullWidth
                     onChange={onChangeText}
@@ -54,7 +56,7 @@ const Home: NextPage = () => {
                         startAdornment: <SearchIcon sx={{ marginRight: 1, color: 'gray' }} />,
                         endAdornment: (isNavigating || status === 'loading') ? <CircularProgress color="inherit" size={20} /> : undefined
                     }} />
-            </Box>
+            </SearchContainer>
             {status === 'success' && data ?
                 data.map((drink) => (
                     <DrinkOption

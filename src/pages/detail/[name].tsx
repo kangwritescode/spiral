@@ -55,6 +55,7 @@ const LegendSquare = styled.span<{ squarecolor?: string }>`
 
 function DetailPage({ drink }: DetailsPageProps) {
 
+    // State
     const [colors, setColors] = React.useState<string[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
 
@@ -89,6 +90,7 @@ function DetailPage({ drink }: DetailsPageProps) {
         setIngredients(ingredients);
     }, [drink, colors]);
 
+    // Generate data for pie chart
     const pieChartData = ingredients.map((ingredient) => ({
         title: ingredient.name || '',
         value: ingredient.teaspoons || 0,
@@ -117,7 +119,10 @@ function DetailPage({ drink }: DetailsPageProps) {
                 <Legend>
                     {ingredients.map((ingredient, index) => (
                         <LegendItem key={index}>
-                            <LegendSquare key={index} squarecolor={ingredient.color} />
+                            <LegendSquare
+                                key={index}
+                                squarecolor={ingredient.color}
+                            />
                             <Typography fontSize={17}>
                                 {`${ingredient.name || ''} (${ingredient.measure || ''})`}
                             </Typography>
@@ -125,11 +130,17 @@ function DetailPage({ drink }: DetailsPageProps) {
                     ))}
                 </Legend>
                 <PieChart
-                    style={{ height: 120, width: 120 }}
+                    style={{
+                        height: 120,
+                        width: 120
+                    }}
                     data={pieChartData}
                 />
             </ChartContainer>
-            <Typography fontSize={17} marginTop='30px' marginX='20px'>
+            <Typography
+                fontSize={17}
+                marginTop='30px'
+                marginX='20px'>
                 {drink?.strInstructions}
             </Typography>
         </PageContainer>
