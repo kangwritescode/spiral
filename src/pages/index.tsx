@@ -2,25 +2,13 @@ import { useState } from "react";
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { styled } from "styled-components";
 
 import { Box, CircularProgress, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
 import DrinkOption from "~/components/DrinkOption";
 import { api } from "~/utils/api";
-
-// Styled Components
-const SearchInput = styled(TextField)`
-    & div {
-        border-radius: 10px;
-        background: whitesmoke;
-    }
-`
-const SearchContainer = styled(Box)`
-    border-bottom: 1px solid lightgray;
-    padding: 16px;
-`
+import { type Drink } from "~/shared/types";
 
 const Home: NextPage = () => {
     // State
@@ -46,22 +34,31 @@ const Home: NextPage = () => {
             <Head>
                 <title>Search Bar</title>
             </Head>
-            <SearchContainer>
-                <SearchInput
+            <Box
+                borderBottom='1px solid lightgray'
+                padding={2}>
+                <TextField
                     fullWidth
-                    onChange={onChangeText}
-                    size="small"
-                    placeholder="Find a drink"
                     InputProps={{
                         startAdornment: <SearchIcon sx={{ marginRight: 1, color: 'gray' }} />,
-                        endAdornment: (isNavigating || status === 'loading') ? <CircularProgress color="inherit" size={20} /> : undefined
+                        endAdornment: (isNavigating || status === 'loading') ?
+                            <CircularProgress color="inherit" size={20} /> : undefined
+                    }}
+                    onChange={onChangeText}
+                    placeholder="Find a drink"
+                    size="small"
+                    sx={{
+                        '& > div': {
+                            borderRadius: '10px',
+                            background: 'whitesmoke',
+                        },
                     }} />
-            </SearchContainer>
+            </Box>
             {status === 'success' && data ?
-                data.map((drink) => (
+                data.map((drink: Drink) => (
                     <DrinkOption
-                        key={drink.idDrink}
                         drink={drink}
+                        key={drink.idDrink}
                         onClick={onClickHandler} />
                 )) : undefined}
         </>

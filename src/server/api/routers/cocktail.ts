@@ -2,7 +2,10 @@ import axios from "axios";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { type DrinkResponse, type Drink } from "~/shared/types";
+import {
+    type DrinkResponse,
+    type Drink
+} from "~/shared/types";
 
 export const cocktailRouter = createTRPCRouter({
     getDrinks: publicProcedure

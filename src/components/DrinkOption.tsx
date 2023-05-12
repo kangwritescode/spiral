@@ -1,32 +1,7 @@
-import { Avatar, Button, Divider } from '@mui/material';
+import { Avatar, Box, Button, Divider } from '@mui/material';
 import React from 'react'
-import { styled } from 'styled-components';
 import { type Drink } from '~/shared/types';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
-// Styled Component
-const StyledButton = styled(Button)`
-    position: relative;
-    text-transform: unset;
-    display: flex;
-    justify-content: left;
-    border-radius: 0;
-    color: black;
-    padding: 10px;
-    height: 60px;
-    font-size: 17px;
-`
-const StyledAvatar = styled(Avatar)`
-    margin-right: 15px;
-`
-const IosRightArrow = styled(ArrowForwardIosIcon)`
-    position: absolute; 
-    color: lightgray;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px;
-`
 
 interface DrinkOptionProps {
     drink: Drink,
@@ -36,13 +11,36 @@ interface DrinkOptionProps {
 export const DrinkOption = ({ drink, onClick }: DrinkOptionProps) => {
     return (
         <>
-            <StyledButton
+            <Button
+                sx={{
+                    borderRadius: '0',
+                    color: 'black',
+                    display: 'flex',
+                    fontSize: '17px',
+                    height: '60px',
+                    justifyContent: 'left',
+                    padding: '10px',
+                    position: 'relative',
+                    textTransform: 'unset',
+                }}
                 fullWidth
                 onClick={() => onClick(drink.strDrink)}>
-                <StyledAvatar src={drink.strDrinkThumb} />
+                <Box
+                    component={Avatar}
+                    marginRight='15px'
+                    src={drink.strDrinkThumb}
+                />
                 {drink.strDrink}
-                <IosRightArrow />
-            </StyledButton>
+                <ArrowForwardIosIcon
+                    sx={{
+                        color: 'lightgray',
+                        fontSize: '14px',
+                        position: 'absolute',
+                        right: '14px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                    }} />
+            </Button>
             <Divider />
         </>
     );
