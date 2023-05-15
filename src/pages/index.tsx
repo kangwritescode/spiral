@@ -35,7 +35,6 @@ const Home: NextPage = () => {
             <Head>
                 <title>Search Bar</title>
             </Head>
-
             <Box
                 borderBottom='1px solid lightgray'
                 padding={2}>
@@ -56,8 +55,8 @@ const Home: NextPage = () => {
                         },
                     }} />
             </Box>
-            {status === 'success' && data ?
-                data.map((drink: Drink) => (
+            {status === 'success' ?
+                data?.map((drink: Drink) => (
                     <DrinkOption
                         drink={drink}
                         key={drink.idDrink}
