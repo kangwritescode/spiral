@@ -13,7 +13,7 @@ function Layout({ children }: LayoutProps) {
 
     const router = useRouter();
     const isDetailPage = router.asPath.includes('detail');
-    const pathSegments = router.asPath.split('/');
+    const title = isDetailPage ? router.asPath.split('/')[2] : 'Thirsty';
     
     return (
         <>
@@ -44,7 +44,7 @@ function Layout({ children }: LayoutProps) {
                     textAlign='center'
                     variant='h1'
                 >
-                    {isDetailPage ? pathSegments[pathSegments.length - 1] : 'Thirsty'}
+                    {title}
                 </Typography>
             </Box>
             {children}
