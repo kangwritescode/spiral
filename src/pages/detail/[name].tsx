@@ -1,62 +1,21 @@
 import { Box, Stack, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart';
-
-import { type Drink } from '~/shared/types';
-import { convertToTsp } from '~/utils/convertToTsp';
-import { generatePastelColor } from '~/utils/generatePastelColor';
 import { api } from '~/utils/api';
+import { type Drink } from '~/shared/types';
 
 // Types
 interface DetailsPageProps {
     drinkName: string;
 }
-interface Ingredient {
-    name?: string;
-    measure?: string;
-    color?: string;
-    teaspoons?: number;
-}
 
 function DetailPage({ drinkName }: DetailsPageProps) {
 
-    // State
-    const [colors, setColors] = React.useState<string[]>([]);
-    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     // Data
-    const { data } = api.cocktail.getDrinks.useQuery({drink: drinkName});
-    const drink = data ? data[0] : undefined;
+    const { data } = api.cocktail.getDrinks.useQuery({ drink: drinkName });
+    const drink = (data ? data[0] : {}) as Drink;
 
-    useEffect(() => {
-        // Generate random pastel colors
-        const colors: string[] = [];
-        for (let i = 0; i < 15; i++) {
-            colors.push(generatePastelColor());
-        }
-        setColors(colors);
-    }, []);
-
-    useEffect(() => {
-        // Generate ingredients from drink data
-        const ingredients: Ingredient[] = [];
-        for (let i = 1; i <= 15; i++) {
-            if (drink) {
-                const ingredient: Ingredient = {}
-
-                const name = drink[`strIngredient${i}` as keyof Drink] as string;
-                const measure = drink[`strMeasure${i}` as keyof Drink] as string;
-
-                if (name && measure) {
-                    ingredient.name = name;
-                    ingredient.measure = measure.trim();
-                    ingredient.teaspoons = convertToTsp(measure);
-                    ingredient.color = colors[i - 1];
-                    ingredients.push(ingredient);
-                }
-            }
-        }
-        setIngredients(ingredients);
-    }, [drink, colors]);
+    const ingredients = getIngredients(drink);
 
     // Generate data for pie chart
     const pieChartData = ingredients.map((ingredient) => ({
@@ -152,6 +111,7 @@ import { type GetServerSidePropsContext } from 'next';
 import { appRouter } from 'src/server/api/root';
 import superjson from 'superjson';
 import { createTRPCContext } from 'src/server/api/trpc'
+import { getIngredients } from '~/utils/getIngredients';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 
@@ -163,7 +123,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         ctx: createTRPCContext(),
         transformer: superjson,
     });
-    
+
     await helpers.cocktail.getDrinks.prefetch({ drink: drinkName })
 
     return {

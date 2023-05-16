@@ -50,3 +50,10 @@ export type Drink = {
 };
 
 export type MeasurementUnit = 'oz' | 'cup' | 'cups' | 'tsp' | 'tbsp' | 'cl' | 'part' | 'parts' | 'shot' | 'shots' | 'tblsp';
+
+export interface Ingredient {
+    name?: string;
+    measure?: string;
+    color?: string;
+    teaspoons?: number;
+}
