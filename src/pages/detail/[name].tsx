@@ -1,15 +1,15 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { type GetServerSideProps } from 'next';
 import React, { useEffect, useState } from 'react'
 import { PieChart } from 'react-minimal-pie-chart';
 
-import { type Drink, type DrinkResponse } from '~/shared/types';
+import { type Drink } from '~/shared/types';
 import { convertToTsp } from '~/utils/convertToTsp';
 import { generatePastelColor } from '~/utils/generatePastelColor';
+import { api } from '~/utils/api';
 
 // Types
 interface DetailsPageProps {
-    drink?: Drink;
+    drinkName: string;
 }
 interface Ingredient {
     name?: string;
@@ -18,11 +18,14 @@ interface Ingredient {
     teaspoons?: number;
 }
 
-function DetailPage({ drink }: DetailsPageProps) {
+function DetailPage({ drinkName }: DetailsPageProps) {
 
     // State
     const [colors, setColors] = React.useState<string[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    // Data
+    const { data } = api.cocktail.getDrinks.useQuery({drink: drinkName});
+    const drink = data ? data[0] : undefined;
 
     useEffect(() => {
         // Generate random pastel colors
@@ -144,19 +147,29 @@ function DetailPage({ drink }: DetailsPageProps) {
 
 export default DetailPage
 
-export const getServerSideProps: GetServerSideProps<DetailsPageProps> = async ({ params }) => {
-    const name = params?.name as string;
-    try {
-        const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${name}`);
-        const data = await response.json() as DrinkResponse;
-        const drink = data.drinks[0];
-        return {
-            props: { drink },
-        };
-    } catch (error) {
-        console.error(error);
-        return {
-            props: {},
-        };
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { type GetServerSidePropsContext } from 'next';
+import { appRouter } from 'src/server/api/root';
+import superjson from 'superjson';
+import { createTRPCContext } from 'src/server/api/trpc'
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+
+    const { query } = context;
+    const drinkName = query.name as string;
+
+    const helpers = createServerSideHelpers({
+        router: appRouter,
+        ctx: createTRPCContext(),
+        transformer: superjson,
+    });
+    
+    await helpers.cocktail.getDrinks.prefetch({ drink: drinkName })
+
+    return {
+        props: {
+            trpcState: helpers.dehydrate(),
+            drinkName: drinkName,
+        }
     }
 }

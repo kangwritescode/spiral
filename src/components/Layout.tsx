@@ -13,7 +13,7 @@ function Layout({ children }: LayoutProps) {
 
     const router = useRouter();
     const isDetailPage = router.asPath.includes('detail');
-    const title = isDetailPage ? router.asPath.split('/')[2] : 'Thirsty';
+    const title = isDetailPage ? decodeURIComponent(router.asPath.split('/')[2] as string) : 'Thirsty';
     
     return (
         <>
